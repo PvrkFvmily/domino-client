@@ -1,5 +1,5 @@
 /* Daniel ________________________________________ */
-.footer-container {
+  .footer-container {
     position: relative;
     min-height: 100vh;
   }
@@ -14,5 +14,18 @@
     height: 2.5rem;
     background-color: orange;
   }
+
+  .circle-d {
+    display: flex;
+    align-items: center;
+    height: 12px;
+    width: 12px;
+    background-color: yellow;
+    border-radius: 50%;
+    /* border-width: 5px; */
+    border-top: 10px;
+    border-color: black;
+    display: inline-block;
+  } 
   
   /* _____________________________________________DP */
