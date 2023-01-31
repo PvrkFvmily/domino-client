@@ -30,7 +30,6 @@ export default function NewPost(){
     const handleSubmit = (e) => {
         e.preventDefault()
         //adds user ID to form
-        setForm({ ...form, user: decoded.id })
         // take form data from the state, post it to the backend with axios
         axios.post(`${process.env.REACT_APP_SERVER_URL}/posts`, form)
             .then(response => {
@@ -44,7 +43,7 @@ export default function NewPost(){
     return(
         <div className="post-container d-flex justify-content-center" >
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e)=>handleSubmit(e)}>
                 <div className="form-container" style={{width: 300,}}>
                     <div className="form-sheet">
                     <p className="new-post fs-2">Create a Post</p>
@@ -56,7 +55,7 @@ export default function NewPost(){
                             id="title"
                             placeholder="Title" 
                             value={form.title}
-                            onChange={e => setForm({ ...form, title: e.target.value})}
+                            onChange={e => setForm({ ...form, title: e.target.value, user: decoded.id})}
                             />
                         </Form.Group>
 
