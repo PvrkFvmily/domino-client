@@ -2,6 +2,8 @@ import axios from "axios"
 import { useState } from 'react'
 import { useNavigate, Navigate } from "react-router-dom"
 import jwt_decode from 'jwt-decode'
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button'
 
 export default function NewPost(){
     //state that holds the value the user has typed
@@ -28,9 +30,11 @@ export default function NewPost(){
     const handleSubmit = (e) => {
         e.preventDefault()
         //adds user ID to form
-        setForm({ ...form, user: decoded.id })
+        // DONT UST SETFORM AND USE IT RIGHTAWAY SINCE IT TAKES A SECOND TO UPDATE USE COPY INSTEAD
+        // setForm({ ...form, user: decoded.id })
+        const formCopy = { ...form, user: decoded.id}
         // take form data from the state, post it to the backend with axios
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/posts`, form)
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/posts`, formCopy)
             .then(response => {
                 console.log(response.data)
                 //once backend gets back to use, navigate to the '/' (home route) to see all the posts
@@ -40,35 +44,43 @@ export default function NewPost(){
     }
     
     return(
-        <div className="form-container">
+        <div className="post-container d-flex justify-content-center" >
 
             <form onSubmit={handleSubmit}>
-                <div className="form-sheet">
-
-                    <p className="new-post">Create a Post</p>
-                    <label htmlFor="title"></label>
-                        <input 
-                            type='text'
-                            id='title'
-                            placeholder="Title"
-                            name={form.title}
+                <div className="form-container" style={{width: 300,}}>
+                    <div className="form-sheet">
+                    <p className="new-post fs-2">Create a Post</p>
+                  
+                        <Form.Group className="mb-1">
+                            <Form.Label></Form.Label>
+                            <Form.Control 
+                            type="text" 
+                            id="title"
+                            placeholder="Title" 
+                            value={form.title}
                             onChange={e => setForm({ ...form, title: e.target.value})}
-                        />
+                            />
+                        </Form.Group>
 
-                    <label htmlFor="content"></label>
-                        <input 
+                        <Form.Group className="mb-3">
+                            <Form.Label></Form.Label>
+                            <Form.Control 
+                            as="textarea" rows={5} 
                             type='text'
                             id='content'
                             placeholder="What's on your mind?"
-                            name={form.content}
+                            value={form.content}
                             onChange={e => setForm({ ...form, content: e.target.value})}
-                        />
+                            />
+                        </Form.Group>
 
-                       
 
-                </div> 
+                    </div> 
 
-                <button className="post-button" type="submit">Post</button>
+                <Button variant="outline-info" type="submit" size="lg">Post</Button>
+                </div>
+                    
+
             </form>
 
         </div>

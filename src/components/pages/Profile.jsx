@@ -12,14 +12,22 @@ export default function Profile({ currentUser, handleLogout }) {
 
 	const generatePosts = posts.map((p, i) => {
 		return (
-			<div key={i}>
-				<h3>{p}</h3>
-				<button>edit</button>
-				<button>delete</button>
+			<div key={`post-${i}`}>
+				<h3>{p.title}</h3>
 			</div>
 		)
 	})
 
+	const handleDelete = async (e) => {
+		e.preventDefault()
+		try {
+			await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${currentUser.id}`)
+			handleLogout()
+			navigate('/')
+		} catch(err) {
+			console.warn(err)
+		}
+	}
 	console.log(generatePosts)
 	// useEffect for getting the user data and checking auth
 	useEffect(() => {
@@ -42,9 +50,10 @@ export default function Profile({ currentUser, handleLogout }) {
 					
 					// decode the jwt token for funzies
 					const decoded = jwt_decode(token)
-					// console.log(decoded.id)
+					console.log(decoded.id)
 					// grab the posts from the user in database and set it to state
 					const getPosts = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api-v1/users/${decoded.id}`)
+					console.log(getPosts.data)
 					// console.log(getPosts.data.posts)
 					// console.log(getPosts.data)
 					setPosts(getPosts.data.posts)
@@ -70,6 +79,7 @@ export default function Profile({ currentUser, handleLogout }) {
 			<h1>Hello, {currentUser?.name}</h1>
 
 			<p>your email is {currentUser?.email}</p>
+			<button onClick={handleDelete}>Delete Your Account</button>
 
 			<div>
 				<h2>Your Posts:</h2>

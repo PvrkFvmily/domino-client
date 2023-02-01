@@ -4,16 +4,22 @@ import {
   Route
 } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import jwt_decode from 'jwt-decode'
+//import components/pages
 import Login from './components/pages/Login'
 import Profile from './components/pages/Profile'
 import Register from './components/pages/Register'
 import Home from './components/pages/Home'
-import Navbar from './components/Navbar'
+import NavBar from './components/NavBar'
 import Footer from './components/Footer'
-import './App.css'
-import './Footer.css'
-import jwt_decode from 'jwt-decode'
 import NewPost from './components/pages/new-post/NewPost'
+import PostDetails from './components/pages/PostDetails'
+
+//import Css files 
+import './css-files/App.css'
+import './css-files/Footer.css'
+import './css-files/NavBar.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   // the currently logged in user will be stored up here in state
@@ -45,7 +51,7 @@ function App() {
   return (
     <Router>
       <header>
-        <Navbar 
+        <NavBar 
           currentUser={currentUser}
           handleLogout={handleLogout}
         />
@@ -85,7 +91,12 @@ function App() {
             path="/new-post"
             element={<NewPost handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser} />} 
           />
-        </Routes>
+
+          <Route
+          path="/post/:id"
+          element={<PostDetails handleLogout={handleLogout} currentUser={currentUser} setCurrentUser={setCurrentUser} />}
+          />
+        </Routes> 
 
       </div>
 
